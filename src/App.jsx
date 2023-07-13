@@ -1,4 +1,5 @@
 import "./App.css";
+import PropTypes from "prop-types";
 import { getPostcode } from "./api.js";
 import { useState } from "react";
 
@@ -14,6 +15,10 @@ function PostcodeInfo({ postcode }) {
     </dl>
   );
 }
+
+PostcodeInfo.propTypes = {
+  postcode: PropTypes.object.isRequired,
+};
 
 function requestPostcode(e, setSelectedPostcode) {
   const value = e.target["postcodeInput"].value;
@@ -43,8 +48,12 @@ function SearchBar({ setSelectedPostcode }) {
   );
 }
 
+SearchBar.propTypes = {
+  setSelectedPostcode: PropTypes.func.isRequired,
+};
+
 function PostcodeContainer() {
-  const [selectedPostcode, setSelectedPostcode] = useState("");
+  const [selectedPostcode, setSelectedPostcode] = useState({});
   return (
     <div>
       <SearchBar setSelectedPostcode={setSelectedPostcode} />
@@ -53,8 +62,6 @@ function PostcodeContainer() {
   );
 }
 
-const POSTCODE = { postcode: "CB23 2AA", admin_county: "Cambridgeshire" };
-
 export default function App() {
-  return <PostcodeContainer postcode={POSTCODE} />;
+  return <PostcodeContainer />;
 }
