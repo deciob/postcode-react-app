@@ -4,6 +4,37 @@ import { getPostcode } from "./api.ts";
 import { useState } from "react";
 import { InferredInfo, Info, InfoPropTypes, Req } from "./Type.ts";
 import { useForm, SubmitHandler } from "react-hook-form";
+import {
+  Field,
+  makeStyles,
+  shorthands,
+  FluentProvider,
+} from "@fluentui/react-components";
+import { createLightTheme } from "@fluentui/react-components";
+import type { BrandVariants, Theme } from "@fluentui/react-components";
+
+const defaultTheme: BrandVariants = {
+  10: "#020305",
+  20: "#111723",
+  30: "#16263D",
+  40: "#193253",
+  50: "#1B3F6A",
+  60: "#1B4C82",
+  70: "#18599B",
+  80: "#1267B4",
+  90: "#3174C2",
+  100: "#4F82C8",
+  110: "#6790CF",
+  120: "#7D9ED5",
+  130: "#92ACDC",
+  140: "#A6BAE2",
+  150: "#BAC9E9",
+  160: "#CDD8EF",
+};
+
+const lightTheme: Theme = {
+  ...createLightTheme(defaultTheme),
+};
 
 type Inputs = {
   postcodeInput: string;
@@ -24,6 +55,18 @@ function InfoSection({ inferred }: Info) {
 
 InfoSection.defaultProps = { postcode: "", admin_county: "", parish: "" };
 InfoSection.propTypes = InfoPropTypes;
+
+const useStyles = makeStyles({
+  root: {
+    // Stack the label above the field
+    display: "flex",
+    flexDirection: "column",
+    // Use 2px gap below the label (per the design system)
+    ...shorthands.gap("2px"),
+    // Prevent the example from taking the full width of the page (optional)
+    maxWidth: "400px",
+  },
+});
 
 function requestPostcode(
   // see: https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/basic_type_example
@@ -55,6 +98,8 @@ function SearchBar({
   } = useForm<Inputs>();
   const callback = requestPostcode.bind(null, setSelectedPostcode);
   const onSubmit: SubmitHandler<Inputs> = (data) => callback(data);
+  const styles = useStyles();
+  const validationState = errors.postcodeInput ? "warning" : "success";
 
   return (
     <form
@@ -67,10 +112,19 @@ function SearchBar({
         void handleSubmit(onSubmit)();
       }}
     >
-      <input {...register("postcodeInput", { required: true })} />
-      {/* errors will return when field validation fails  */}
-      {errors.postcodeInput && <span>This field is required</span>}
-      <input type="submit" />
+      <div className={styles.root}>
+        <Field
+          label="Enter a valid Postcode"
+          required={true}
+          validationState={validationState}
+          validationMessage={
+            errors.postcodeInput && <span>This field is required</span>
+          }
+        >
+          <input {...register("postcodeInput", { required: true })} />
+        </Field>
+        <input type="submit" />
+      </div>
     </form>
   );
 }
@@ -85,10 +139,12 @@ function PostcodeContainer() {
   );
 
   return (
-    <div>
-      <SearchBar setSelectedPostcode={setSelectedPostcode} />
-      <InfoSection inferred={selectedPostcode} />
-    </div>
+    <FluentProvider theme={lightTheme}>
+      <div>
+        <SearchBar setSelectedPostcode={setSelectedPostcode} />
+        <InfoSection inferred={selectedPostcode} />
+      </div>
+    </FluentProvider>
   );
 }
 
