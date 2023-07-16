@@ -5,5 +5,3 @@ export function getPostcode<T>(postcode: string): Promise<T> {
     .then((r) => r.json())
     .then((d) => d as T);
 }
-
-//https://www.newline.co/@bespoyasov/how-to-use-fetch-with-typescript--a81ac257
