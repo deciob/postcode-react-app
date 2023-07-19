@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 function PostcodeContainer() {
   const styles = useStyles();
   const [selectedPostcode, setSelectedPostcode] = useState<InferredInfo>(
-    {} as InferredInfo,
+    null as InferredInfo,
   );
 
   return (

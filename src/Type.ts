@@ -6,7 +6,7 @@ export const InfoPropTypes = {
   parish: PropTypes.string.isRequired,
 };
 
-export type InferredInfo = InferProps<typeof InfoPropTypes>;
+export type InferredInfo = InferProps<typeof InfoPropTypes> | null;
 
 export interface Info {
   inferred: InferredInfo;

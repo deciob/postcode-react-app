@@ -82,9 +82,6 @@ export function SearchBar({
           label="Enter a valid Postcode"
           required={true}
           validationState={validationState}
-          validationMessage={
-            errors.postcodeInput && <span>This field is required</span>
-          }
         >
           <Input
             size="large"
