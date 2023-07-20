@@ -4,7 +4,9 @@ import App from "./components/App.tsx";
 import "./index.css";
 import { FluentProvider, teamsLightTheme } from "@fluentui/react-components";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+const container = document.getElementById("root");
+
+ReactDOM.createRoot(container!).render(
   <React.StrictMode>
     <FluentProvider theme={teamsLightTheme}>
       <App />

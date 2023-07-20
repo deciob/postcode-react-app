@@ -37,7 +37,7 @@ function requestPostcode(
 ) {
   getPostcode<Req>(postcodeInput)
     .then(({ result, status }) => {
-      if (status === 200) {
+      if (status === 200 && result) {
         setSelectedPostcode({
           postcode: postcodeInput,
           admin_county: result.admin_county,
