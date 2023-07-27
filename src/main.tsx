@@ -6,10 +6,12 @@ import { FluentProvider, teamsLightTheme } from "@fluentui/react-components";
 
 const container = document.getElementById("root");
 
-ReactDOM.createRoot(container!).render(
-  <React.StrictMode>
-    <FluentProvider theme={teamsLightTheme}>
-      <App />
-    </FluentProvider>
-  </React.StrictMode>,
-);
+if (container) {
+  ReactDOM.createRoot(container).render(
+    <React.StrictMode>
+      <FluentProvider theme={teamsLightTheme}>
+        <App />
+      </FluentProvider>
+    </React.StrictMode>,
+  );
+}
