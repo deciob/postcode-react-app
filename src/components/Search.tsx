@@ -1,18 +1,14 @@
 import PropTypes, { InferProps } from "prop-types";
-import { getPostcode } from "../api.ts";
-import { InferredInfo, Req } from "../Type.ts";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { requestPostcode } from "../api.ts";
+import { InferredInfo, Inputs, Req } from "../Type.ts";
+import { SubmitHandler, useForm } from "react-hook-form";
 import {
   Button,
-  Input,
   Field,
+  Input,
   makeStyles,
   shorthands,
 } from "@fluentui/react-components";
-
-type Inputs = {
-  postcodeInput: string;
-};
 
 const useStyles = makeStyles({
   form: {
@@ -30,26 +26,6 @@ const useStyles = makeStyles({
   },
 });
 
-function requestPostcode(
-  // see: https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/basic_type_example
-  setSelectedPostcode: React.Dispatch<React.SetStateAction<InferredInfo>>,
-  { postcodeInput }: Inputs,
-) {
-  getPostcode<Req>(postcodeInput)
-    .then(({ result, status }) => {
-      if (status === 200 && result) {
-        setSelectedPostcode({
-          postcode: postcodeInput,
-          admin_county: result.admin_county,
-          parish: result.parish,
-        });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
-
 export function SearchBar({
   setSelectedPostcode,
 }: InferProps<typeof SearchBar.propTypes>) {
@@ -59,7 +35,8 @@ export function SearchBar({
     formState: { errors },
   } = useForm<Inputs>();
   const callback = requestPostcode.bind(null, setSelectedPostcode);
-  const onSubmit: SubmitHandler<Inputs> = (data) => callback(data);
+  const onSubmit: SubmitHandler<Inputs> = (data) =>
+    callback(data.postcodeInput);
   const validationState = errors.postcodeInput ? "warning" : "success";
   const styles = useStyles();
 

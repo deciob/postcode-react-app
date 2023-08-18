@@ -16,3 +16,7 @@ export type Req = {
   status: number;
   result: InferredInfo;
 };
+
+export type Inputs = {
+  postcodeInput: string;
+};
