@@ -1,6 +1,5 @@
-import PropTypes, { InferProps } from "prop-types";
-import { requestPostcode } from "../api.ts";
-import { InferredInfo, Inputs, Req } from "../Type.ts";
+import { useNavigate } from "react-router-dom";
+import { Inputs } from "../Type.ts";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   Button,
@@ -26,17 +25,15 @@ const useStyles = makeStyles({
   },
 });
 
-export function SearchBar({
-  setSelectedPostcode,
-}: InferProps<typeof SearchBar.propTypes>) {
+export function SearchBar() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const callback = requestPostcode.bind(null, setSelectedPostcode);
+  const navigate = useNavigate();
   const onSubmit: SubmitHandler<Inputs> = (data) =>
-    callback(data.postcodeInput);
+    navigate(`/${data.postcodeInput}`, { replace: true });
   const validationState = errors.postcodeInput ? "warning" : "success";
   const styles = useStyles();
 
@@ -72,7 +69,3 @@ export function SearchBar({
     </form>
   );
 }
-
-SearchBar.propTypes = {
-  setSelectedPostcode: PropTypes.func.isRequired,
-};

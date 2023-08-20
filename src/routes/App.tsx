@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { InferredInfo } from "../Type.ts";
-import { SearchBar } from "./Search.tsx";
-import { InfoSection } from "./Result.tsx";
+import { useRouteLoaderData } from "react-router-dom";
+import { Response } from "../Type.ts";
+import { SearchBar } from "../components/Search.tsx";
+import { InfoSection } from "../components/Result.tsx";
 import { makeStyles, shorthands } from "@fluentui/react-components";
 
 const useStyles = makeStyles({
@@ -28,17 +28,27 @@ const useStyles = makeStyles({
 
 function PostcodeContainer() {
   const styles = useStyles();
-  const [selectedPostcode, setSelectedPostcode] = useState<InferredInfo>(
-    null as InferredInfo,
+
+  const postcodeInfoFromRoute = useRouteLoaderData("postcode") as (
+    | Response
+    | undefined
   );
+
+  const infoSection = postcodeInfoFromRoute
+    ? (
+      <InfoSection
+        response={postcodeInfoFromRoute}
+      />
+    )
+    : null;
 
   return (
     <div className={styles.app}>
       <div className={styles.search}>
-        <SearchBar setSelectedPostcode={setSelectedPostcode} />
+        <SearchBar />
       </div>
       <div className={styles.info}>
-        <InfoSection inferred={selectedPostcode} />
+        {infoSection}
       </div>
     </div>
   );

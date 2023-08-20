@@ -2,10 +2,13 @@ import { InferredInfo, Req } from "./Type.ts";
 
 export const ROOT = "https://api.postcodes.io";
 
-export function getPostcode<T>(postcode: string): Promise<T> {
-  return fetch(`${ROOT}/postcodes/${postcode}`)
-    .then((r) => r.json())
-    .then((d) => d as T);
+export const fetchPostcode = (postcode: string): Promise<Response> => {
+  return fetch(`${ROOT}/postcodes/${postcode}`);
+};
+
+export async function getPostcode<T>(postcode: string): Promise<T> {
+  const response = await fetchPostcode(postcode);
+  return await response.json();
 }
 
 export const requestPostcode = (
